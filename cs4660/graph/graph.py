@@ -105,22 +105,73 @@ class AdjacencyList(object):
         self.adjacency_list = {}
 
     def adjacent(self, node_1, node_2):
-        pass
+        if node_1 not in self.adjacency_list:
+            return False
+
+        return node_2 in self.adjacency_list[node_1]
 
     def neighbors(self, node):
-        pass
+        return self.adjacency_list[node]
 
     def add_node(self, node):
-        pass
+        if node in self.adjacency_list.keys():
+            return False
+        self.adjacency_list[node] = []
+        return True
 
     def remove_node(self, node):
-        pass
+        if node not in self.adjacency_list.keys():
+            return False
+
+        self.adjacency_list.pop(node)
+
+        for edges in self.adjacency_list.values():
+            if node in edges:
+            	edges.remove(node)
+            
+        return True
 
     def add_edge(self, edge):
-        pass
+        from_node = edge.from_node
+        to_node = edge.to_node
+
+        if from_node not in self.adjacency_list.keys():
+            return False
+
+        if to_node not in self.adjacency_list.keys():
+            return False
+
+        if to_node in self.adjacency_list[from_node]:
+            return False
+
+        if from_node in self.adjacency_list[to_node]:
+            return False
+
+        self.adjacency_list[from_node].append(to_node)
+        self.adjacency_list[to_node].append(from_node)
+
+        return True
 
     def remove_edge(self, edge):
-        pass
+        from_node = edge.from_node
+        to_node = edge.to_node
+
+        if from_node not in self.adjacency_list.keys():
+            return False
+
+        if to_node not in self.adjacency_list.keys():
+            return False
+
+        if to_node not in self.adjacency_list[from_node]:
+            return False
+
+        if from_node not in self.adjacency_list[to_node]:
+            return False
+
+        self.adjacency_list[from_node].remove(to_node)
+        self.adjacency_list[to_node].remove(from_node)
+
+        return True
 
 class AdjacencyMatrix(object):
     def __init__(self):

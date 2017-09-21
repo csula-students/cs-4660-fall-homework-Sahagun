@@ -5,12 +5,13 @@ import unittest
 from graph import graph
 
 
-class TestAdjacencyMatrix(unittest.TestCase):
+class TestAdjacencyList(unittest.TestCase):
+    """Tests adjacency list implementation"""
     def setUp(self):
         graph_1_path = './test/fixtures/graph-1.txt'
         graph_2_path = './test/fixtures/graph-2.txt'
-        self.graph_1 = graph.construct_graph_from_file(graph.AdjacencyMatrix(), graph_1_path)
-        self.graph_2 = graph.construct_graph_from_file(graph.AdjacencyMatrix(), graph_2_path)
+        self.graph_1 = graph.construct_graph_from_file(graph.AdjacencyList(), graph_1_path)
+        self.graph_2 = graph.construct_graph_from_file(graph.AdjacencyList(), graph_2_path)
 
     def test_adjacent(self):
         self.assertEqual(True, self.graph_1.adjacent(graph.Node(1), graph.Node(2)))
@@ -50,8 +51,9 @@ class TestAdjacencyMatrix(unittest.TestCase):
     def test_add_edge(self):
         self.assertEqual(False, self.graph_1.adjacent(graph.Node(1), graph.Node(4)))
 
-        self.assertEqual(True, self.graph_1.add_edge(graph.Edge(graph.Node(1), graph.Node(4), 1)))
+        self.assertEqual(True, self.graph_1.add_edge( graph.Edge(graph.Node(1), graph.Node(4), 1)))
         self.assertEqual([graph.Node(2),graph.Node(3),graph.Node(4)], self.graph_1.neighbors(graph.Node(1)))
+
         self.assertEqual(True, self.graph_1.adjacent(graph.Node(1), graph.Node(4)))
 
         # When adding edge that already existed, should return false
@@ -63,5 +65,4 @@ class TestAdjacencyMatrix(unittest.TestCase):
         self.assertEqual(False, self.graph_1.remove_edge(graph.Edge(graph.Node(1), graph.Node(6), 1)))
         self.assertEqual(True, self.graph_1.remove_edge(graph.Edge(graph.Node(6), graph.Node(5), 1)))
         self.assertEqual(False, self.graph_1.adjacent(graph.Node(6), graph.Node(5)))
-
 
