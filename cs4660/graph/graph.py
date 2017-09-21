@@ -138,17 +138,10 @@ class AdjacencyList(object):
         if from_node not in self.adjacency_list.keys():
             return False
 
-        if to_node not in self.adjacency_list.keys():
-            return False
-
         if to_node in self.adjacency_list[from_node]:
             return False
 
-        if from_node in self.adjacency_list[to_node]:
-            return False
-
         self.adjacency_list[from_node].append(to_node)
-        self.adjacency_list[to_node].append(from_node)
 
         return True
 
@@ -159,17 +152,10 @@ class AdjacencyList(object):
         if from_node not in self.adjacency_list.keys():
             return False
 
-        if to_node not in self.adjacency_list.keys():
-            return False
-
         if to_node not in self.adjacency_list[from_node]:
             return False
 
-        if from_node not in self.adjacency_list[to_node]:
-            return False
-
         self.adjacency_list[from_node].remove(to_node)
-        self.adjacency_list[to_node].remove(from_node)
 
         return True
 
