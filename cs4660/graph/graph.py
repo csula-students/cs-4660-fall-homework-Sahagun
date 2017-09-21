@@ -36,6 +36,25 @@ def construct_graph_from_file(graph, file_path):
     2. for each following line (from second line to last line), add them as edge to graph
     3. return the graph
     """
+    file = open(file_path, encoding="utf-8")
+    lines = file.readlines()
+
+    num_nodes = int(lines[0]) #  number of nodes read from the first line of the files.
+
+    for i in range(num_nodes):
+        node = Node(i)
+        graph.add_node(node)
+
+
+    lines.pop(0) # removes the first line from the file.
+
+    for line in lines:
+        # Converts "1:2:3" -> [1,2,3]
+        data = list(map(int, line.split(':')))
+        edge = Edge(Node(data[0]), Node(data[1]), data[2])
+        graph.add_edge(edge)
+
+
     return graph
 
 class Node(object):
@@ -113,26 +132,85 @@ class AdjacencyMatrix(object):
         self.nodes = []
 
     def adjacent(self, node_1, node_2):
-        pass
+        i = self.__get_node_index(node_1)
+        j = self.__get_node_index(node_2)
+        return self.adjacency_matrix[i][j] != 0
 
     def neighbors(self, node):
-        pass
+        index = self.__get_node_index(node)
+        neighbors = []
+        for i in range(len(self.nodes)):
+            if self.adjacency_matrix[index][i] != 0:
+                neighbors.append(self.nodes[i]) 
+        return neighbors
 
     def add_node(self, node):
-        pass
+
+        if node in self.nodes:
+            return False
+
+        self.nodes.append(node)
+
+        # add a new col of 0s
+        for i in range(len(self.adjacency_matrix)):
+            self.adjacency_matrix[i].append(0)
+
+        # add new row of 0s
+        size = len(self.nodes)
+        row = [0 for x in range(size)]
+        self.adjacency_matrix.append(row)
+
+        return True
+
 
     def remove_node(self, node):
-        pass
+        if node not in self.nodes:
+            return False
+        
+
+        self.nodes.remove(node)
+        index = self.__get_node_index(node)
+
+        # removes the col
+        for i in range(len(self.adjacency_matrix)):
+            self.adjacency_matrix[i].pop(index - 1)
+
+        # removes the row
+        self.adjacency_matrix.pop(index - 1)
+        return True
+
+
+
 
     def add_edge(self, edge):
-        pass
+        i = self.__get_node_index(edge.from_node)
+        j = self.__get_node_index(edge.to_node)
+        if self.adjacency_matrix[i][j] != 0:
+            return False
+
+        self.adjacency_matrix[i][j] = edge.weight
+        return True
+
+
 
     def remove_edge(self, edge):
-        pass
+        i = self.__get_node_index(edge.from_node)
+        j = self.__get_node_index(edge.to_node)
+
+        if self.adjacency_matrix[i][j] == 0:
+            return False
+
+        self.adjacency_matrix[i][j] = 0
+        return True
+
 
     def __get_node_index(self, node):
         """helper method to find node index"""
-        pass
+        try:
+            return self.nodes.index(node)
+        except:
+            return False
+
 
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
