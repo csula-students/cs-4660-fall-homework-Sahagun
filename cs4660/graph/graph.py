@@ -257,20 +257,59 @@ class ObjectOriented(object):
         self.nodes = []
 
     def adjacent(self, node_1, node_2):
-        pass
+        for edge in self.edges:
+            if edge.from_node == node_1:
+                if edge.to_node == node_2:
+                    return True
+        return False
 
     def neighbors(self, node):
-        pass
+        neighbors = []
+        for edge in self.edges:
+            if edge.from_node == node:
+                neighbors.append(edge.to_node)
+        return neighbors
+
 
     def add_node(self, node):
-        pass
+        if node in self.nodes:
+            return False
+
+        self.nodes.append(node)
+        return True
 
     def remove_node(self, node):
-        pass
+        if node not in self.nodes:
+            return False
+
+        edges_to_remove = []
+
+        for edge in self.edges:
+            if edge.from_node == node or edge.to_node == node:
+                edges_to_remove.append(edge)
+
+        for edge in edges_to_remove:
+        	self.edges.remove(edge)
+
+        return True
+
 
     def add_edge(self, edge):
-        pass
+        if edge.from_node not in self.nodes:
+            return False
+
+        if edge.to_node not in self.nodes:
+            return False
+
+        if edge in self.edges:
+            return False
+
+        self.edges.append(edge)
+        return True
 
     def remove_edge(self, edge):
-        pass
+        if edge not in self.edges:
+            return False
 
+        self.edges.remove(edge)
+        return True
